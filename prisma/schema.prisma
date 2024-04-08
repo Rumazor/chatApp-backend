@@ -24,7 +24,11 @@ model user_posts {
 model users {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at  DateTime     @default(now()) @db.Timestamptz(6)
-  username    String?
+  email       String?      @unique
+  fullName    String?
+  is_active   Boolean?
+  password    String? 
+  roles       String[]     @default(["user"])
   user_posts  user_posts[]
   users       users        @relation("usersTousers", fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_users_id_fkey")
   other_users users?       @relation("usersTousers")

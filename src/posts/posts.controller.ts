@@ -8,7 +8,7 @@ export class PostsController {
 
   @Post('/create')
   create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(
+    return this.postsService.createPost(
       '46436f87-500d-4900-a962-a1e112514ab6',
       createPostDto,
     );
