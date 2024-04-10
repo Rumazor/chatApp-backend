@@ -5,14 +5,24 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
+import * as bcrypt from 'bcrypt';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
 import { LoginUserDTO } from './dto/login-user.dto';
+import { JwtPayload } from 'src/interfaces/payload.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  private getJwtToken(payload: JwtPayload) {
+    const token = this.jwtService.sign(payload);
+    return token;
+  }
 
   async createUser(createUserDto: CreateUserDTO) {
     try {
@@ -21,6 +31,7 @@ export class AuthService {
       const user = await this.prisma.users.create({
         data: {
           ...userData,
+          email: userData.email.toLowerCase().trim(),
           password: bcrypt.hashSync(password, 10),
         },
       });
@@ -28,9 +39,10 @@ export class AuthService {
       delete user.password;
 
       return {
-        message: 'User created successfully',
-        user,
-        // retornar el JWT
+        ...user,
+        token: this.getJwtToken({
+          sub: user.id,
+        }),
       };
     } catch (error) {
       this.handleDBErrors(error);
@@ -45,6 +57,7 @@ export class AuthService {
         email,
       },
       select: {
+        id: true,
         email: true,
         password: true,
       },
@@ -57,8 +70,12 @@ export class AuthService {
     if (!isPasswordValid)
       throw new UnauthorizedException('Credentials are invalid');
 
-    return user;
-    //retornar JWT
+    return {
+      ...user,
+      token: this.getJwtToken({
+        sub: user.id,
+      }),
+    };
   }
 
   private handleDBErrors(error: any): never {
