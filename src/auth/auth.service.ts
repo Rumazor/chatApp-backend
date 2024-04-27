@@ -54,7 +54,7 @@ export class AuthService {
 
     const user = await this.prisma.users.findUnique({
       where: {
-        email,
+        email: email.toLowerCase().trim(),
       },
       select: {
         id: true,
@@ -70,6 +70,7 @@ export class AuthService {
     if (!isPasswordValid)
       throw new UnauthorizedException('Credentials are invalid');
 
+    delete user.password;
     return {
       ...user,
       token: this.getJwtToken({
