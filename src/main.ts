@@ -16,7 +16,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
-    .setTitle('Ruma Post example')
+    .setTitle('Ruma API example')
     .setDescription('API description')
     .setVersion('1.0')
     .addTag('posts')
