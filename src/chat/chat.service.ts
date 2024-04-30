@@ -23,6 +23,8 @@ export class ChatService {
         throw new Error('User is not active');
       }
 
+      this.checkUserConnection(user);
+
       this.connectedClients[client.id] = {
         socket: client,
         user,
@@ -42,5 +44,14 @@ export class ChatService {
 
   getUserBySocketId(socketId: string) {
     return this.connectedClients[socketId]?.user.fullName;
+  }
+
+  private checkUserConnection(user: User) {
+    for (const clientId in this.connectedClients) {
+      if (this.connectedClients[clientId].user.id === user.id) {
+        this.connectedClients[clientId].socket.disconnect();
+        break;
+      }
+    }
   }
 }
