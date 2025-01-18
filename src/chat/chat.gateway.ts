@@ -29,7 +29,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect();
       return;
     }
-    // console.log({ payload });
     this.wss.emit('clients-updated', this.chatService.getConnectedClients());
   }
   handleDisconnect(client: Socket) {
@@ -44,6 +43,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.wss.emit('message-from-server', {
       message,
       user: this.chatService.getUserBySocketId(client.id),
+      timestamp: new Date().toISOString(),
     });
   }
 }
