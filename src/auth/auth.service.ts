@@ -37,7 +37,6 @@ export class AuthService {
       });
 
       delete user.password;
-
       return {
         ...user,
         token: this.getJwtToken({
@@ -45,6 +44,7 @@ export class AuthService {
         }),
       };
     } catch (error) {
+      console.error('Error creating user:', error);
       this.handleDBErrors(error);
     }
   }
