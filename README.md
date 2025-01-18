@@ -1,74 +1,192 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Chat App
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A real-time chat application built with **NestJS**, **Prisma**, **Socket.IO**, **JWT**, and **Supabase**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- Real-time communication with Socket.IO.
+- Authentication and authorization using JWT.
+- Database management with Prisma and PostgreSQL (or any supported Prisma database).
+- Scalable and maintainable backend architecture.
+- Integrated with Supabase for additional functionalities.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js**: >= 16.x
+- **Yarn** or **npm**
+- **PostgreSQL** or a Prisma-compatible database.
+
+Set up the `.env` file with the following variables:
+
+```env
+DATABASE_URL="your_database_connection_string"
+DIRECT_URL="your_direct_database_connection_string"
+PORT=3000
+JWT_SECRET="your_jwt_secret_key"
+```
+
+---
 
 ## Installation
 
+1. Clone the repository:
+
+   ```bash
+   git clone git@github.com:Rumazor/chatApp-backend.git
+   cd chat-app
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
+
+3. Generate Prisma client:
+
+   ```bash
+   npx prisma generate
+   ```
+
+4. Run database migrations:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Pull the database schema (if needed):
+   ```bash
+   npx prisma db pull
+   ```
+
+---
+
+## Running the Application
+
+### Development Mode
+
 ```bash
-$ yarn install
+yarn start:dev
+# or
+npm run start:dev
 ```
 
-## Running the app
+### Production Mode
 
-```bash
-# development
-$ yarn run start
+1. Build the application:
 
-# watch mode
-$ yarn run start:dev
+   ```bash
+   yarn build
+   # or
+   npm run build
+   ```
 
-# production mode
-$ yarn run start:prod
-```
+2. Start the application:
+   ```bash
+   yarn start:prod
+   # or
+   npm run start:prod
+   ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ yarn run test
+## Scripts
 
-# e2e tests
-$ yarn run test:e2e
+- **`yarn start`**: Starts the app in production mode.
+- **`yarn start:dev`**: Starts the app in development mode with live reload.
+- **`yarn test`**: Runs tests using Jest.
+- **`yarn format`**: Formats the code using Prettier.
+- **`yarn lint`**: Lints the code using ESLint.
+- **`yarn build`**: Builds the project for production.
 
-# test coverage
-$ yarn run test:cov
-```
+---
 
-## Support
+## Database Management
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Prisma CLI Commands
 
-## Stay in touch
+- Generate Prisma Client:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  ```bash
+  npx prisma generate
+  ```
+
+- Run Migrations:
+
+  ```bash
+  npx prisma migrate dev
+  ```
+
+- Pull Existing Database Schema:
+
+  ```bash
+  npx prisma db pull
+  ```
+
+- View Prisma Studio (GUI for the database):
+  ```bash
+  npx prisma studio
+  ```
+
+---
+
+## Socket.IO
+
+Socket.IO is used for real-time communication. Update the configuration in `src/app.gateway.ts` for custom namespace or event handling.
+
+---
+
+## Authentication
+
+Authentication is managed with JWT. Ensure you set the `JWT_SECRET` in the `.env` file. Modify the logic in the `auth` module to suit your requirements.
+
+---
+
+## Environment Variables
+
+| Variable       | Description                    |
+| -------------- | ------------------------------ |
+| `DATABASE_URL` | Database connection string     |
+| `DIRECT_URL`   | Direct database URL (optional) |
+| `PORT`         | Server port (default: 3000)    |
+| `JWT_SECRET`   | Secret key for JWT encryption  |
+
+---
+
+## Additional Notes
+
+- This project uses **Supabase** for additional backend services. Make sure to configure your Supabase settings in the `.env` file or within the respective modules.
+- For detailed API documentation, access the Swagger UI at `/api-docs` after running the app.
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m "Add feature description"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Create a pull request.
+
+---
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
-# NestJS-Practice-Supabase-Prisma
+This project is licensed under the **UNLICENSED** license.
+
+---
